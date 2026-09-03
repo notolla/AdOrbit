@@ -7,6 +7,8 @@ const channelSchema = z.enum(["google_ads", "linkedin_ads", "meta_ads"]);
 
 const bodySchema = z.object({
   product_service: z.string().trim().min(3),
+  user_name: z.string().trim().min(2).optional(),
+  user_email: z.string().trim().email().optional(),
   website_url: z.string().trim().optional(),
   channels: z.array(channelSchema).min(1),
   audience_profile: z.string().trim().min(1),
@@ -27,6 +29,8 @@ export const Route = createFileRoute("/api/generate-strategy")({
           const body = bodySchema.parse(json);
           const report = await generateStrategyReport({
             product_service: body.product_service,
+            user_name: body.user_name,
+            user_email: body.user_email,
             website_url: body.website_url || undefined,
             channels: body.channels,
             audience_profile: body.audience_profile,

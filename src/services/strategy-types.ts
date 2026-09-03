@@ -26,6 +26,8 @@ export type StrategyBrief = {
 export type StrategyReport = {
   product_service: string;
   target_audience: string;
+  contact_name?: string;
+  contact_email?: string;
   website_url?: string;
   website_insights?: string;
   brief?: StrategyBrief;
@@ -37,6 +39,8 @@ export type StrategyReport = {
 
 export type StrategyInput = {
   product_service: string;
+  user_name?: string;
+  user_email?: string;
   website_url?: string;
   channels: StrategyChannel[];
   audience_profile: string;

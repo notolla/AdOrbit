@@ -1,15 +1,24 @@
 import { useState, type FormEvent } from "react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { firstNameFromFullName } from "@/lib/onboarding-types";
 
 type StrategyReportUnlockCardProps = {
   onUnlock: (email: string) => Promise<void> | void;
+  defaultEmail?: string;
+  userName?: string;
   className?: string;
 };
 
-export function StrategyReportUnlockCard({ onUnlock, className = "" }: StrategyReportUnlockCardProps) {
-  const [email, setEmail] = useState("");
+export function StrategyReportUnlockCard({
+  onUnlock,
+  defaultEmail = "",
+  userName,
+  className = "",
+}: StrategyReportUnlockCardProps) {
+  const [email, setEmail] = useState(defaultEmail);
   const [loading, setLoading] = useState(false);
+  const firstName = firstNameFromFullName(userName ?? "");
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -22,7 +31,7 @@ export function StrategyReportUnlockCard({ onUnlock, className = "" }: StrategyR
     setLoading(true);
     try {
       await onUnlock(trimmed);
-      toast.success("Tam rapor açıldı.");
+      toast.success(`${firstName ? `${firstName}, ` : ""}tam rapor açıldı.`);
     } catch {
       toast.error("Rapor açılamadı. Lütfen tekrar deneyin.");
     } finally {
@@ -39,19 +48,19 @@ export function StrategyReportUnlockCard({ onUnlock, className = "" }: StrategyR
       </span>
 
       <h3 className="mt-4 font-display text-lg font-semibold tracking-tight text-slate-900">
-        Tam strateji raporunu görüntüleyin
+        {firstName ? `${firstName}, ` : ""}tam strateji raporunu görüntüleyin
       </h3>
 
       <p className="mt-2 text-sm leading-relaxed text-slate-600">
-        LinkedIn Ads ve Meta Ads kanal stratejileri, anahtar kelimeler, negatif listeler ve tüm
-        reklam metinleri e-posta doğrulaması sonrası açılır.
+        {defaultEmail ? (
+          <>
+            <span className="font-medium text-slate-800">{defaultEmail}</span> adresiyle kayıtlı
+            kanal stratejileri, anahtar kelimeler ve reklam metinlerine erişin.
+          </>
+        ) : (
+          "Kanal stratejileri, anahtar kelimeler, negatif listeler ve reklam metinleri e-posta doğrulaması sonrası açılır."
+        )}
       </p>
-
-      <ul className="mt-4 space-y-1.5 text-left text-xs text-slate-500">
-        <li>• 3 kanal kampanya stratejisi</li>
-        <li>• Hedefleme parametreleri ve bütçe önerileri</li>
-        <li>• PDF / HTML dışa aktarma</li>
-      </ul>
 
       <form onSubmit={(event) => void handleSubmit(event)} className="mt-5 space-y-3 text-left">
         <label className="block text-xs font-medium text-slate-700">Kurumsal e-posta</label>

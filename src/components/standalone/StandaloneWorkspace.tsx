@@ -10,6 +10,7 @@ import { StrategyReportPreview } from "@/components/standalone/StrategyReportPre
 import { generateStrategyClient } from "@/services/strategy-client";
 import type { StrategyReport } from "@/services/strategy-types";
 import type { OnboardingFormData } from "@/lib/onboarding-types";
+import { firstNameFromFullName } from "@/lib/onboarding-types";
 import {
   isStrategyReportUnlocked,
   unlockStrategyReport,
@@ -19,13 +20,22 @@ export function StandaloneWorkspace() {
   const [loading, setLoading] = useState(false);
   const [report, setReport] = useState<StrategyReport | null>(null);
   const [unlocked, setUnlocked] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+  const [userName, setUserName] = useState("");
   const reportRef = useRef<HTMLDivElement>(null);
 
   async function handleSubmit(form: OnboardingFormData) {
+    const email = form.user_email.trim();
+    const name = form.user_name.trim();
+    setUserEmail(email);
+    setUserName(name);
+
     setLoading(true);
     try {
       const next = await generateStrategyClient({
         product_service: form.product_service,
+        user_name: name,
+        user_email: email,
         website_url: form.website_url || undefined,
         channels: form.channels,
         audience_profile: form.audience_profile,
@@ -37,7 +47,10 @@ export function StandaloneWorkspace() {
       setReport(next);
       setUnlocked(isStrategyReportUnlocked(next.generated_at));
 
-      toast.success("Strateji raporu hazır — tam içerik için e-posta doğrulaması gerekir.");
+      const firstName = firstNameFromFullName(name);
+      toast.success(
+        `${firstName ? `${firstName}, ` : ""}strateji raporu özeti hazır (${email}).`,
+      );
       window.requestAnimationFrame(() => {
         reportRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       });
@@ -52,6 +65,7 @@ export function StandaloneWorkspace() {
     if (!report) return;
     unlockStrategyReport(report.generated_at, email);
     setUnlocked(true);
+    setUserEmail(email);
   }
 
   return (
@@ -60,7 +74,13 @@ export function StandaloneWorkspace() {
 
       <div ref={reportRef}>
         {report ? (
-          <StrategyReportPreview report={report} unlocked={unlocked} onUnlock={handleUnlock} />
+          <StrategyReportPreview
+            report={report}
+            unlocked={unlocked}
+            userEmail={userEmail || report.contact_email}
+            userName={userName || report.contact_name}
+            onUnlock={handleUnlock}
+          />
         ) : null}
       </div>
 

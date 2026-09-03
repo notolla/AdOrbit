@@ -13,6 +13,7 @@ import {
 import {
   INITIAL_ONBOARDING_FORM,
   ONBOARDING_STEP_COUNT,
+  firstNameFromFullName,
   type OnboardingFormData,
 } from "@/lib/onboarding-types";
 import type { StrategyChannel } from "@/services/strategy-types";
@@ -66,19 +67,27 @@ function OptionCard({ label, description, selected, onClick, multi }: OptionCard
   );
 }
 
-const STEP_TITLES = [
-  "Temel bilgiler ve ürün",
-  "Yayın kanalları",
-  "Hedef kitle profili",
-  "Coğrafi kapsam",
-  "Kampanya hedefi",
-  "Bütçe aralığı",
-  "İletişim dili ve tonu",
-] as const;
+function stepTitle(step: number, firstName: string): string {
+  const p = firstName ? `${firstName}, ` : "";
+  const titles: Record<number, string> = {
+    1: "Hoş geldiniz",
+    2: `${p}temel bilgiler ve ürün`,
+    3: `${p}yayın kanallarını seçin`,
+    4: `${p}hedef kitle profili`,
+    5: `${p}coğrafi kapsam`,
+    6: `${p}kampanya hedefi`,
+    7: `${p}bütçe aralığı`,
+    8: `${p}iletişim dili ve tonu`,
+  };
+  return titles[step] ?? "";
+}
 
 export function OnboardingWizard({ loading, onSubmit }: OnboardingWizardProps) {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<OnboardingFormData>(INITIAL_ONBOARDING_FORM);
+
+  const firstName = firstNameFromFullName(form.user_name);
+  const hasContact = Boolean(form.user_name.trim() && form.user_email.trim());
 
   function toggleChannel(channel: StrategyChannel) {
     setForm((current) => {
@@ -98,42 +107,52 @@ export function OnboardingWizard({ loading, onSubmit }: OnboardingWizardProps) {
   function validateStep(): boolean {
     switch (step) {
       case 1:
+        if (form.user_name.trim().length < 2) {
+          toast.error("Adınızı girin.");
+          return false;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.user_email.trim())) {
+          toast.error("Geçerli bir e-posta adresi girin.");
+          return false;
+        }
+        return true;
+      case 2:
         if (form.product_service.trim().length < 3) {
           toast.error("Amiral gemisi ürün/hizmet alanını doldurun.");
           return false;
         }
         return true;
-      case 2:
+      case 3:
         if (form.channels.length === 0) {
           toast.error("En az bir yayın kanalı seçin.");
           return false;
         }
         return true;
-      case 3:
+      case 4:
         if (!form.audience_profile) {
           toast.error("Hedef kitle profili seçin.");
           return false;
         }
         return true;
-      case 4:
+      case 5:
         if (!form.geo_scope) {
           toast.error("Coğrafi kapsam seçin.");
           return false;
         }
         return true;
-      case 5:
+      case 6:
         if (!form.campaign_goal) {
           toast.error("Kampanya hedefi seçin.");
           return false;
         }
         return true;
-      case 6:
+      case 7:
         if (!form.budget_range) {
           toast.error("Bütçe aralığı seçin.");
           return false;
         }
         return true;
-      case 7:
+      case 8:
         if (!form.communication_tone) {
           toast.error("İletişim tonu seçin.");
           return false;
@@ -163,11 +182,19 @@ export function OnboardingWizard({ loading, onSubmit }: OnboardingWizardProps) {
         <header className="mb-8">
           <p className="section-label">Onboarding</p>
           <h1 className="mt-2 font-display text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-            Strateji ve rapor sihirbazı
+            {hasContact && step > 1
+              ? `Merhaba ${firstName}`
+              : "Strateji ve rapor sihirbazı"}
           </h1>
           <p className="mt-2 text-sm leading-relaxed text-slate-600">
-            Birkaç adımda kanal stratejinizi tanımlayın; web siteniz analiz edilerek kurumsal rapor
-            üretilsin.
+            {hasContact && step > 1 ? (
+              <>
+                <span className="font-medium text-slate-800">{form.user_email}</span> için
+                kanal stratejinizi adım adım oluşturalım.
+              </>
+            ) : (
+              "Birkaç adımda kanal stratejinizi tanımlayın; web siteniz analiz edilerek kurumsal rapor üretilsin."
+            )}
           </p>
         </header>
 
@@ -175,9 +202,41 @@ export function OnboardingWizard({ loading, onSubmit }: OnboardingWizardProps) {
           <WizardProgress currentStep={step} totalSteps={ONBOARDING_STEP_COUNT} />
 
           <div className="mt-8">
-            <h2 className="text-base font-semibold text-slate-900">{STEP_TITLES[step - 1]}</h2>
+            <h2 className="text-base font-semibold capitalize text-slate-900">
+              {stepTitle(step, firstName)}
+            </h2>
 
             {step === 1 ? (
+              <div className="mt-5 space-y-4">
+                <div>
+                  <label className="text-xs font-medium text-slate-700">Adınız</label>
+                  <input
+                    type="text"
+                    autoComplete="name"
+                    value={form.user_name}
+                    onChange={(e) => selectField("user_name", e.target.value)}
+                    placeholder="örn. Ahmet Yılmaz"
+                    className="input-field mt-1.5"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-slate-700">E-posta</label>
+                  <input
+                    type="email"
+                    autoComplete="email"
+                    value={form.user_email}
+                    onChange={(e) => selectField("user_email", e.target.value)}
+                    placeholder="ornek@sirket.com"
+                    className="input-field mt-1.5"
+                  />
+                  <p className="mt-1 text-[11px] text-slate-500">
+                    Rapor ve hitaplar bu adres üzerinden kişiselleştirilir.
+                  </p>
+                </div>
+              </div>
+            ) : null}
+
+            {step === 2 ? (
               <div className="mt-5 space-y-4">
                 <div>
                   <label className="text-xs font-medium text-slate-700">Web sitesi URL</label>
@@ -209,7 +268,7 @@ export function OnboardingWizard({ loading, onSubmit }: OnboardingWizardProps) {
               </div>
             ) : null}
 
-            {step === 2 ? (
+            {step === 3 ? (
               <div className="mt-5 grid gap-3">
                 {ONBOARDING_CHANNELS.map((channel) => (
                   <OptionCard
@@ -224,7 +283,7 @@ export function OnboardingWizard({ loading, onSubmit }: OnboardingWizardProps) {
               </div>
             ) : null}
 
-            {step === 3 ? (
+            {step === 4 ? (
               <div className="mt-5 grid gap-3">
                 {AUDIENCE_PROFILES.map((option) => (
                   <OptionCard
@@ -238,7 +297,7 @@ export function OnboardingWizard({ loading, onSubmit }: OnboardingWizardProps) {
               </div>
             ) : null}
 
-            {step === 4 ? (
+            {step === 5 ? (
               <div className="mt-5 grid gap-3">
                 {GEO_SCOPES.map((option) => (
                   <OptionCard
@@ -252,7 +311,7 @@ export function OnboardingWizard({ loading, onSubmit }: OnboardingWizardProps) {
               </div>
             ) : null}
 
-            {step === 5 ? (
+            {step === 6 ? (
               <div className="mt-5 grid gap-3">
                 {CAMPAIGN_GOALS.map((option) => (
                   <OptionCard
@@ -266,7 +325,7 @@ export function OnboardingWizard({ loading, onSubmit }: OnboardingWizardProps) {
               </div>
             ) : null}
 
-            {step === 6 ? (
+            {step === 7 ? (
               <div className="mt-5 grid gap-3">
                 {BUDGET_RANGES.map((option) => (
                   <OptionCard
@@ -280,7 +339,7 @@ export function OnboardingWizard({ loading, onSubmit }: OnboardingWizardProps) {
               </div>
             ) : null}
 
-            {step === 7 ? (
+            {step === 8 ? (
               <div className="mt-5 grid gap-3">
                 {COMMUNICATION_TONES.map((option) => (
                   <OptionCard

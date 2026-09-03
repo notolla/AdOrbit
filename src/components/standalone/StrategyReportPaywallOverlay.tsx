@@ -4,11 +4,15 @@ import { StrategyReportUnlockCard } from "@/components/standalone/StrategyReport
 type StrategyReportPaywallOverlayProps = {
   children?: ReactNode;
   onUnlock: (email: string) => Promise<void> | void;
+  userEmail?: string;
+  userName?: string;
 };
 
 export function StrategyReportPaywallOverlay({
   children,
   onUnlock,
+  userEmail,
+  userName,
 }: StrategyReportPaywallOverlayProps) {
   return (
     <>
@@ -21,7 +25,13 @@ export function StrategyReportPaywallOverlay({
         aria-hidden
       />
       <div className="absolute inset-0 z-20 flex items-center justify-center px-4 py-12">
-        {children ?? <StrategyReportUnlockCard onUnlock={onUnlock} />}
+        {children ?? (
+          <StrategyReportUnlockCard
+            onUnlock={onUnlock}
+            defaultEmail={userEmail}
+            userName={userName}
+          />
+        )}
       </div>
     </>
   );

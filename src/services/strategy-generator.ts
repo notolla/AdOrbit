@@ -244,6 +244,8 @@ export async function generateStrategyReport(input: StrategyInput): Promise<Stra
       return {
         product_service: input.product_service,
         target_audience: parsed.target_audience,
+        contact_name: input.user_name,
+        contact_email: input.user_email,
         website_url: websiteContext?.url,
         website_insights: websiteContext ? formatWebsiteInsights(websiteContext) : undefined,
         brief: {

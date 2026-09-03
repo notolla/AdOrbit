@@ -8,9 +8,13 @@ import { downloadStrategyReportHtml, printStrategyReportPdf } from "@/lib/strate
 import { formatStrategyBriefLines } from "@/lib/strategy-brief-labels";
 import { StrategyReportPaywallOverlay } from "@/components/standalone/StrategyReportPaywallOverlay";
 
+import { firstNameFromFullName } from "@/lib/onboarding-types";
+
 type StrategyReportPreviewProps = {
   report: StrategyReport;
   unlocked: boolean;
+  userEmail?: string;
+  userName?: string;
   onUnlock: (email: string) => Promise<void> | void;
 };
 
@@ -108,8 +112,17 @@ function ChannelCard({
   );
 }
 
-export function StrategyReportPreview({ report, unlocked, onUnlock }: StrategyReportPreviewProps) {
+export function StrategyReportPreview({
+  report,
+  unlocked,
+  userEmail,
+  userName,
+  onUnlock,
+}: StrategyReportPreviewProps) {
   const [previewChannel, ...lockedChannels] = report.channels;
+  const email = userEmail ?? report.contact_email;
+  const name = userName ?? report.contact_name;
+  const firstName = firstNameFromFullName(name ?? "");
 
   return (
     <section id="strategy-report" className="scroll-mt-20 border-b border-slate-200/60 bg-surface py-12">
@@ -117,6 +130,12 @@ export function StrategyReportPreview({ report, unlocked, onUnlock }: StrategyRe
         <header className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0 flex-1">
             <p className="section-label">Strateji raporu</p>
+            {email ? (
+              <p className="mt-2 text-sm text-slate-600">
+                {firstName ? `Merhaba ${firstName}, ` : ""}
+                <span className="font-medium text-slate-900">{email}</span> için hazırlanan özet
+              </p>
+            ) : null}
             <h2 className="mt-2 font-display text-2xl font-semibold text-slate-900">
               {report.sector}
             </h2>
@@ -201,7 +220,7 @@ export function StrategyReportPreview({ report, unlocked, onUnlock }: StrategyRe
             ))}
           </div>
 
-          {!unlocked ? <StrategyReportPaywallOverlay onUnlock={onUnlock} /> : null}
+          {!unlocked ? <StrategyReportPaywallOverlay onUnlock={onUnlock} userEmail={email} userName={name} /> : null}
         </div>
       </div>
     </section>
