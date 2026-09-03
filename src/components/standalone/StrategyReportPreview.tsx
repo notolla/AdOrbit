@@ -5,6 +5,7 @@ import {
   type StrategyReport,
 } from "@/services/strategy-types";
 import { downloadStrategyReportHtml, printStrategyReportPdf } from "@/lib/strategy-export";
+import { formatStrategyBriefLines } from "@/lib/strategy-brief-labels";
 import { StrategyReportPaywallOverlay } from "@/components/standalone/StrategyReportPaywallOverlay";
 
 type StrategyReportPreviewProps = {
@@ -121,6 +122,13 @@ export function StrategyReportPreview({ report, unlocked, onUnlock }: StrategyRe
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-slate-600">{report.executive_summary}</p>
             <p className="mt-2 text-xs text-slate-500">{report.product_service}</p>
+            {report.brief ? (
+              <ul className="mt-3 grid gap-1 rounded-lg border border-slate-200/80 bg-white px-3 py-2.5 text-xs text-slate-600 sm:grid-cols-2">
+                {formatStrategyBriefLines(report.brief).map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+            ) : null}
             <p className="mt-3 rounded-lg border border-slate-200/80 bg-white px-3 py-2.5 text-sm leading-relaxed text-slate-700">
               <span className="font-medium text-slate-900">Önerilen hedef kitle:</span>{" "}
               {report.target_audience}

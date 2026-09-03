@@ -9,9 +9,8 @@ import {
 import type { AnalysisSubmitPayload } from "@/services/types";
 import { saveAnalysisSnapshot } from "@/lib/analysis-history";
 import { LiveActivitySteps } from "@/components/landing/LiveActivitySteps";
-import { OrbitalHeroAnimation } from "@/components/OrbitalHeroAnimation";
 
-const BADGES = ["Google · LinkedIn · Meta", "Gemini AI", "Canlı API veya Rapor"];
+const BADGES = ["Google Ads v22+", "Multi-Channel", "KVKK Uyumlu"];
 
 type HeroProps = {
   onSubmitted: (payload: AnalysisSubmitPayload) => void;
@@ -130,9 +129,8 @@ export function Hero({ onSubmitted }: HeroProps) {
           </p>
         </div>
 
-        <div className="mt-14 grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
-          <div>
-            <form onSubmit={handleSubmit} className="surface-card relative p-6 sm:p-7">
+        <div className="mt-10 max-w-xl">
+          <form onSubmit={handleSubmit} className="surface-card relative p-6 sm:p-7">
               {loading ? (
                 <div
                   className="absolute inset-0 z-10 flex items-center justify-center rounded-xl bg-white/70 px-6 backdrop-blur-sm"
@@ -205,11 +203,6 @@ export function Hero({ onSubmitted }: HeroProps) {
                 ))}
               </ul>
             </form>
-          </div>
-
-          <div className="order-first flex items-center justify-center lg:order-last">
-            <OrbitalHeroAnimation />
-          </div>
         </div>
       </div>
     </section>

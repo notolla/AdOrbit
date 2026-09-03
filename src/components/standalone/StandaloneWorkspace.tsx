@@ -1,14 +1,15 @@
 import { useRef, useState } from "react";
 import { toast } from "sonner";
+import { OnboardingWizard } from "@/components/onboarding/OnboardingWizard";
 import { SocialProof } from "@/components/landing/SocialProof";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { FAQ } from "@/components/landing/FAQ";
 import { ComparisonTable } from "@/components/ComparisonTable";
 import { RoiCalculator } from "@/components/RoiCalculator";
-import { StrategyInputForm } from "@/components/standalone/StrategyInputForm";
 import { StrategyReportPreview } from "@/components/standalone/StrategyReportPreview";
 import { generateStrategyClient } from "@/services/strategy-client";
 import type { StrategyReport } from "@/services/strategy-types";
+import type { OnboardingFormData } from "@/lib/onboarding-types";
 import {
   isStrategyReportUnlocked,
   unlockStrategyReport,
@@ -20,22 +21,23 @@ export function StandaloneWorkspace() {
   const [unlocked, setUnlocked] = useState(false);
   const reportRef = useRef<HTMLDivElement>(null);
 
-  async function handleSubmit(input: {
-    website_url: string;
-    product_service: string;
-    industry_notes: string;
-  }) {
+  async function handleSubmit(form: OnboardingFormData) {
     setLoading(true);
     try {
       const next = await generateStrategyClient({
-        product_service: input.product_service,
-        website_url: input.website_url || undefined,
-        industry_notes: input.industry_notes || undefined,
+        product_service: form.product_service,
+        website_url: form.website_url || undefined,
+        channels: form.channels,
+        audience_profile: form.audience_profile,
+        geo_scope: form.geo_scope,
+        campaign_goal: form.campaign_goal,
+        budget_range: form.budget_range,
+        communication_tone: form.communication_tone,
       });
       setReport(next);
       setUnlocked(isStrategyReportUnlocked(next.generated_at));
 
-      toast.success("Strateji raporu özeti hazır — tam rapor için e-posta girin.");
+      toast.success("Strateji raporu hazır — tam içerik için e-posta doğrulaması gerekir.");
       window.requestAnimationFrame(() => {
         reportRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       });
@@ -54,7 +56,7 @@ export function StandaloneWorkspace() {
 
   return (
     <>
-      <StrategyInputForm loading={loading} onSubmit={handleSubmit} />
+      <OnboardingWizard loading={loading} onSubmit={handleSubmit} />
 
       <div ref={reportRef}>
         {report ? (
@@ -63,7 +65,6 @@ export function StandaloneWorkspace() {
       </div>
 
       <SocialProof />
-
       <HowItWorks />
       <ComparisonTable />
       <RoiCalculator />

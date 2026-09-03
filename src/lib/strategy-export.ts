@@ -1,4 +1,5 @@
 import { BRAND } from "@/lib/brand";
+import { formatStrategyBriefLines } from "@/lib/strategy-brief-labels";
 import { CHANNEL_LABELS, type StrategyReport } from "@/services/strategy-types";
 
 function escapeHtml(value: string): string {
@@ -56,6 +57,11 @@ function buildHtml(report: StrategyReport): string {
   <p class="meta">${escapeHtml(report.sector)} · ${new Date(report.generated_at).toLocaleString("tr-TR")}</p>
   <p><strong>Ürün/Hizmet:</strong> ${escapeHtml(report.product_service)}</p>
   <p><strong>Önerilen Hedef Kitle:</strong> ${escapeHtml(report.target_audience)}</p>
+  ${
+    report.brief
+      ? `<p><strong>Strateji özeti:</strong> ${formatStrategyBriefLines(report.brief).map(escapeHtml).join(" · ")}</p>`
+      : ""
+  }
   ${
     report.website_url
       ? `<p><strong>Web Sitesi:</strong> ${escapeHtml(report.website_url)}</p>`

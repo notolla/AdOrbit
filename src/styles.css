@@ -248,6 +248,14 @@
     @apply rounded-md bg-white text-slate-900 shadow-sm;
   }
 
+  .wizard-option-card {
+    @apply rounded-lg border border-slate-200 bg-white p-4 transition-colors duration-150 hover:border-slate-300;
+  }
+
+  .wizard-option-card-selected {
+    @apply border-slate-900 bg-slate-50 ring-1 ring-slate-900;
+  }
+
   .pill-badge-google {
     @apply inline-flex items-center gap-1.5 rounded-full border border-[#4285F4]/20 bg-[#4285F4]/5 px-2.5 py-0.5 text-[11px] font-medium tracking-wide text-slate-600;
   }

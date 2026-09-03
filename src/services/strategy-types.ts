@@ -14,11 +14,21 @@ export type ChannelStrategy = {
   call_to_action: string;
 };
 
+export type StrategyBrief = {
+  audience_profile: string;
+  geo_scope: string;
+  campaign_goal: string;
+  budget_range: string;
+  communication_tone: string;
+  channels: StrategyChannel[];
+};
+
 export type StrategyReport = {
   product_service: string;
   target_audience: string;
   website_url?: string;
   website_insights?: string;
+  brief?: StrategyBrief;
   sector: string;
   executive_summary: string;
   channels: ChannelStrategy[];
@@ -28,6 +38,12 @@ export type StrategyReport = {
 export type StrategyInput = {
   product_service: string;
   website_url?: string;
+  channels: StrategyChannel[];
+  audience_profile: string;
+  geo_scope: string;
+  campaign_goal: string;
+  budget_range: string;
+  communication_tone: string;
   industry_notes?: string;
   email?: string;
 };

@@ -5,7 +5,7 @@ export async function generateStrategyClient(input: StrategyInput): Promise<Stra
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
-    signal: AbortSignal.timeout(90_000),
+    signal: AbortSignal.timeout(120_000),
   });
 
   const payload = (await response.json().catch(() => ({}))) as StrategyReport | { message?: string };
