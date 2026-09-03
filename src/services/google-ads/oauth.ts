@@ -1,4 +1,5 @@
 import { getGoogleAdsOAuthConfig, normalizeGoogleAdsApiVersion } from "./config";
+import { formatGoogleAdsApiError } from "./errors";
 
 const ADWORDS_SCOPE = "https://www.googleapis.com/auth/adwords";
 
@@ -85,12 +86,7 @@ async function fetchAccessibleCustomers(
 
   if (!response.ok) {
     const errorText = await response.text();
-    const error = new Error(
-      `Erişilebilir Google Ads hesapları alınamadı (${response.status}, ${apiVersion}): ${errorText.slice(0, 200)}`,
-    ) as Error & { status?: number; apiVersion?: string };
-    error.status = response.status;
-    error.apiVersion = apiVersion;
-    throw error;
+    throw formatGoogleAdsApiError(response.status, errorText);
   }
 
   const payload = (await response.json()) as { resourceNames?: string[] };

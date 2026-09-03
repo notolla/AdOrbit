@@ -40,7 +40,7 @@ function normalizeFinalUrl(url: string): string {
 }
 
 function sanitizeName(value: string, maxLength = 255): string {
-  return value.replace(/[^\p{L}\p{N}\s\-_.|]/gu, "").trim().slice(0, maxLength) || "AdBuilder Kampanya";
+  return value.replace(/[^\p{L}\p{N}\s\-_.|]/gu, "").trim().slice(0, maxLength) || "AdOrbit Kampanya";
 }
 
 function truncateText(value: string, maxLength: number): string {
@@ -81,7 +81,7 @@ function buildStructureOperations(
     campaignBudgetOperation: {
       create: {
         resourceName: `customers/${customerId}/campaignBudgets/${budgetTempId}`,
-        name: `AdBuilder · ${sanitizeName(analysis.sector, 80)} · ${timestamp}`,
+        name: `AdOrbit · ${sanitizeName(analysis.sector, 80)} · ${timestamp}`,
         amountMicros: buildBudgetMicros(),
         deliveryMethod: "STANDARD",
         explicitlyShared: false,
@@ -93,7 +93,7 @@ function buildStructureOperations(
     campaignOperation: {
       create: {
         resourceName: `customers/${customerId}/campaigns/${campaignTempId}`,
-        name: `AdBuilder · ${sanitizeName(analysis.sector, 120)} · ${timestamp}`,
+        name: `AdOrbit · ${sanitizeName(analysis.sector, 120)} · ${timestamp}`,
         advertisingChannelType: "SEARCH",
         status: "PAUSED",
         campaignBudget: `customers/${customerId}/campaignBudgets/${budgetTempId}`,
@@ -192,7 +192,7 @@ function buildStructureOperations(
       .filter((item) => item.text.length > 0);
 
     while (headlines.length < 3) {
-      headlines.push({ text: truncateText(campaign.name, 30) || "AdBuilder AI" });
+      headlines.push({ text: truncateText(campaign.name, 30) || "AdOrbit" });
     }
     while (descriptions.length < 2) {
       descriptions.push({

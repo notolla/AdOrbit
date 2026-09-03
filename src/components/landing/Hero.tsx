@@ -11,7 +11,7 @@ import { saveAnalysisSnapshot } from "@/lib/analysis-history";
 import { LiveActivitySteps } from "@/components/landing/LiveActivitySteps";
 import { OrbitalHeroAnimation } from "@/components/OrbitalHeroAnimation";
 
-const BADGES = ["Google Ads API", "Gemini AI", "KVKK Uyumlu"];
+const BADGES = ["Google · LinkedIn · Meta", "Gemini AI", "Canlı API veya Rapor"];
 
 type HeroProps = {
   onSubmitted: (payload: AnalysisSubmitPayload) => void;
@@ -117,7 +117,7 @@ export function Hero({ onSubmitted }: HeroProps) {
               <span />
               <span />
             </span>
-            Google Ads otomasyon platformu
+            AdOrbit — Canlı API modu
           </span>
           <h1 className="mt-6 font-display text-[2rem] font-semibold leading-[1.15] tracking-tight text-slate-900 sm:text-[2.75rem] lg:text-5xl">
             Google Ads kampanyalarınızı{" "}
@@ -125,7 +125,8 @@ export function Hero({ onSubmitted }: HeroProps) {
           </h1>
           <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-600">
             Web sitenizi analiz edin; sektörünüze özel reklam grupları, long-tail anahtar
-            kelimeler ve bütçe koruma listeleri otomatik oluşturulsun.
+            kelimeler ve bütçe koruma listeleri otomatik oluşturulsun. Hesabınızı bağlayın,
+            kampanyayı doğrudan Google Ads&apos;e aktarın.
           </p>
         </div>
 

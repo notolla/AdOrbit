@@ -78,7 +78,7 @@ export function SocialProof() {
                   backgroundClip: "text",
                 }}
               >
-                AdBuilder AI
+                AdOrbit
               </span>{" "}
               <span className="font-medium text-[#34A853]">ile otomatikleştiriyor.</span>
             </p>

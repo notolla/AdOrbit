@@ -97,6 +97,8 @@ export const GOOGLE_ADS_ERROR_MESSAGES: Record<string, string> = {
   no_accounts: "Bu Google hesabına bağlı Google Ads hesabı bulunamadı.",
   list_accounts_failed:
     "Google Ads hesapları listelenemedi. Developer Token onayını ve Google Ads API erişimini kontrol edin.",
+  api_not_enabled:
+    "Google Ads API Cloud projenizde kapalı. Google Cloud Console → API Library → Google Ads API → Enable.",
   token_exchange_failed: "Google OAuth jetonu alınamadı. Redirect URI ayarını kontrol edin.",
   missing_refresh_token:
     "Yenileme jetonu alınamadı. Google hesabınızın uygulama erişimini kaldırıp tekrar deneyin.",

@@ -13,7 +13,7 @@ export function Navbar() {
         <a href="/" className="group flex shrink-0 items-center gap-2.5">
           <span className="flex h-7 w-7 flex-col items-center justify-center gap-0.5 rounded-md border border-slate-200 bg-surface-raised transition-all duration-200 group-hover:border-[#4285F4]/30">
             <span className="text-[10px] font-bold leading-none tracking-tighter text-slate-900">
-              AB
+              AO
             </span>
             <span aria-hidden="true" className="google-dots scale-[0.65]">
               <span />
@@ -23,7 +23,7 @@ export function Navbar() {
             </span>
           </span>
           <span className="text-sm font-semibold tracking-tight text-slate-900">
-            AdBuilder <span className="text-[#4285F4]">AI</span>
+            Ad<span className="text-[#4285F4]">Orbit</span>
           </span>
         </a>
 

@@ -37,6 +37,10 @@ export type ScrapedPageData = {
   title: string | null;
   metaDescription: string | null;
   h1: string | null;
+  /** Sayfa gövdesinden çıkarılan metin özeti (strateji / AI analizi için). */
+  bodySnippet: string | null;
+  /** H2 başlıkları (ürün/hizmet bölümleri için ipucu). */
+  headings: string[];
 };
 
 export type AnalysisSnapshot = {

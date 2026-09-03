@@ -233,11 +233,19 @@
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-[#4285F4] px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:bg-[#3367D6] hover:shadow-[0_0_20px_-4px_rgba(66,133,244,0.4)] disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-slate-800 disabled:opacity-50;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-surface-raised px-4 py-2.5 text-sm font-medium text-slate-700 transition-all duration-200 hover:border-slate-300 hover:bg-slate-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors duration-200 hover:border-slate-300 hover:bg-slate-50;
+  }
+
+  .segment-control {
+    @apply rounded-lg border border-slate-200/80 bg-slate-100/70 p-0.5;
+  }
+
+  .segment-control-active {
+    @apply rounded-md bg-white text-slate-900 shadow-sm;
   }
 
   .pill-badge-google {

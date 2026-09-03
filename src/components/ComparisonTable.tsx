@@ -55,7 +55,7 @@ export function ComparisonTable() {
         <header className="max-w-xl">
           <p className="section-label">Karşılaştırma</p>
           <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight text-slate-900 sm:text-[1.75rem]">
-            Geleneksel ajans süreçleri vs. AdBuilder AI
+            Geleneksel ajans süreçleri vs. AdOrbit
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-slate-600">
             Manuel süreçlerle karşılaştırıldığında zaman, maliyet ve kalite farkı.
@@ -70,7 +70,7 @@ export function ComparisonTable() {
             </div>
             <div className="border-l border-[#4285F4]/15 bg-[#4285F4]/[0.03] px-5 py-3.5">
               <span className="inline-flex items-center gap-2 font-medium text-slate-900">
-                AdBuilder AI
+                AdOrbit
                 <span className="pill-badge-google">Önerilen</span>
               </span>
             </div>
@@ -115,7 +115,7 @@ export function ComparisonTable() {
                     <StatusIcon positive />
                     <div>
                       <p className="inline-flex items-center gap-2 section-label">
-                        AdBuilder AI
+                        AdOrbit
                         <span className="pill-badge">Önerilen</span>
                       </p>
                       <p className="mt-0.5 text-sm font-medium text-slate-900">{row.adbuilder}</p>

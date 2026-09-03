@@ -60,7 +60,9 @@ export function GoogleAdsConnectionProvider({ children }: { children: ReactNode 
       setIsConnecting(false);
       void refreshStatus().then((next) => {
         if (next.connected) {
-          toast.success("Google Ads hesabınız bağlandı. Canlı veriler yükleniyor…");
+          toast.success("Google Ads hesabınız bağlandı.", {
+            description: "Analiz sonuçlarınız geri yükleniyor…",
+          });
         }
       });
       return;

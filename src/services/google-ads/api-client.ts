@@ -1,5 +1,6 @@
 import { getGoogleAdsAccessToken } from "./auth";
 import type { GoogleAdsConfig } from "./config";
+import { formatGoogleAdsApiError } from "./errors";
 
 export type GoogleAdsApiErrorDetail = {
   message: string;
@@ -40,37 +41,7 @@ export async function googleAdsPost<T>(
 
 async function parseGoogleAdsError(response: Response): Promise<Error> {
   const raw = await response.text();
-
-  try {
-    const payload = JSON.parse(raw) as {
-      error?: {
-        message?: string;
-        details?: Array<{
-          errors?: Array<{ message?: string; errorCode?: Record<string, string> }>;
-        }>;
-      };
-    };
-
-    const detailMessages =
-      payload.error?.details?.flatMap((detail) =>
-        (detail.errors ?? []).map((item) => item.message).filter(Boolean),
-      ) ?? [];
-
-    const firstCode = payload.error?.details?.[0]?.errors?.[0]?.errorCode;
-    const codeLabel = firstCode ? Object.values(firstCode)[0] : undefined;
-
-    const message =
-      detailMessages[0] ??
-      payload.error?.message ??
-      `Google Ads API hatası (${response.status})`;
-
-    const error = new Error(message) as Error & { status?: number; code?: string };
-    error.status = response.status;
-    if (codeLabel) error.code = codeLabel;
-    return error;
-  } catch {
-    return new Error(`Google Ads API hatası (${response.status}): ${raw.slice(0, 240)}`);
-  }
+  return formatGoogleAdsApiError(response.status, raw);
 }
 
 export function resourceId(resourceName: string): string {

@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { Toaster } from "@/components/ui/sonner";
+import { AppModeProvider } from "@/contexts/AppModeContext";
 import { GoogleAdsConnectionProvider } from "@/contexts/GoogleAdsConnectionContext";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
@@ -128,11 +129,13 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <GoogleAdsConnectionProvider>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
-        <Toaster position="top-center" />
-      </GoogleAdsConnectionProvider>
+      <AppModeProvider>
+        <GoogleAdsConnectionProvider>
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+          <Toaster position="top-center" />
+        </GoogleAdsConnectionProvider>
+      </AppModeProvider>
     </QueryClientProvider>
   );
 }

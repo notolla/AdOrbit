@@ -49,7 +49,7 @@ export function RoiCalculator() {
             Zaman ve maliyet tasarrufunuzu hesaplayın
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-slate-600">
-            Haftalık kampanya hacminize göre AdBuilder AI ile kazandığınız operasyonel verimliliği
+            Haftalık kampanya hacminize göre AdOrbit ile kazandığınız operasyonel verimliliği
             görün.
           </p>
         </header>
@@ -116,7 +116,7 @@ export function RoiCalculator() {
 
           <p className="mt-5 text-xs text-slate-500">
             Hesaplama varsayımı: kampanya başına ortalama {HOURS_SAVED_PER_CAMPAIGN} saat manuel
-            kurulum yerine AdBuilder AI ile ~60 saniyelik otomasyon.
+            kurulum yerine AdOrbit ile ~60 saniyelik otomasyon.
           </p>
 
           <button type="button" onClick={scrollToForm} className="btn-primary mt-6 w-full sm:w-auto">

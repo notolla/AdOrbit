@@ -11,7 +11,7 @@ const FAQ_ITEMS = [
   {
     question: "Google Ads hesabımın API yetkisini vermem gerekiyor mu?",
     answer:
-      "Hayır. AdBuilder AI hesabınızın gizliliğini korumak için doğrudan tam entegrasyon yerine, Google Ads Editor uyumlu optimize edilmiş CSV aktarımı ve manuel yapılandırma sunar. Verileriniz tamamen güvende kalır.",
+      "Hayır. AdOrbit hesabınızın gizliliğini korumak için doğrudan tam entegrasyon yerine, Google Ads Editor uyumlu optimize edilmiş CSV aktarımı ve manuel yapılandırma sunar. Verileriniz tamamen güvende kalır.",
   },
   {
     question: "Yapay zeka hangi sektörler için kampanya üretebiliyor?",
@@ -40,7 +40,7 @@ export function FAQ() {
             Sıkça sorulan sorular
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-slate-600">
-            AdBuilder AI hakkında merak edilenler.
+            AdOrbit hakkında merak edilenler.
           </p>
         </header>
 

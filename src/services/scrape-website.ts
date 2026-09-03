@@ -22,6 +22,24 @@ function stripHtmlTags(value: string): string {
   return decodeHtmlEntities(value.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim());
 }
 
+function extractBodySnippet(html: string, maxLength = 6000): string {
+  const withoutNoise = html
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<noscript[\s\S]*?<\/noscript>/gi, " ")
+    .replace(/<!--[\s\S]*?-->/g, " ");
+
+  return stripHtmlTags(withoutNoise).slice(0, maxLength);
+}
+
+function extractHeadings(html: string): string[] {
+  const matches = [...html.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/gi)];
+  return matches
+    .map((match) => stripHtmlTags(match[1] ?? ""))
+    .filter(Boolean)
+    .slice(0, 12);
+}
+
 function matchMetaContent(html: string, name: string): string | null {
   const patterns = [
     new RegExp(
@@ -49,7 +67,7 @@ export async function scrapeWebsite(rawUrl: string): Promise<ScrapedPageData> {
 
   const response = await fetch(url, {
     headers: {
-      "User-Agent": "Mozilla/5.0 (compatible; AdBuilderAI/1.0)",
+      "User-Agent": "Mozilla/5.0 (compatible; AdOrbit/1.0)",
       Accept: "text/html,application/xhtml+xml",
     },
     signal: AbortSignal.timeout(15_000),
@@ -75,5 +93,7 @@ export async function scrapeWebsite(rawUrl: string): Promise<ScrapedPageData> {
     title: titleMatch?.[1] ? stripHtmlTags(titleMatch[1]) : null,
     metaDescription,
     h1: h1Match?.[1] ? stripHtmlTags(h1Match[1]) : null,
+    bodySnippet: extractBodySnippet(html),
+    headings: extractHeadings(html),
   };
 }

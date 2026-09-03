@@ -1,4 +1,3 @@
-import { Sparkles } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
@@ -57,9 +56,12 @@ function OpenAiIcon() {
 
 function GeminiIcon() {
   return (
-    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100">
-      <Sparkles className="h-4 w-4 text-slate-600" strokeWidth={2} />
-    </div>
+    <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+      <path
+        fill="#4285F4"
+        d="M12 2.5 14.8 9.2 21.5 12 14.8 14.8 12 21.5 9.2 14.8 2.5 12 9.2 9.2Z"
+      />
+    </svg>
   );
 }
 

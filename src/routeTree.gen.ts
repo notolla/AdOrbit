@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiAnalyzeWebsiteRouteImport } from './routes/api/analyze-website'
+import { Route as ApiGenerateStrategyRouteImport } from './routes/api/generate-strategy'
 import { Route as ApiGoogleAdsDisconnectRouteImport } from './routes/api/google-ads/disconnect'
 import { Route as ApiGoogleAdsEnrichKeywordsRouteImport } from './routes/api/google-ads/enrich-keywords'
 import { Route as ApiGoogleAdsPushCampaignsRouteImport } from './routes/api/google-ads/push-campaigns'
@@ -26,6 +27,11 @@ const IndexRoute = IndexRouteImport.update({
 const ApiAnalyzeWebsiteRoute = ApiAnalyzeWebsiteRouteImport.update({
   id: '/api/analyze-website',
   path: '/api/analyze-website',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGenerateStrategyRoute = ApiGenerateStrategyRouteImport.update({
+  id: '/api/generate-strategy',
+  path: '/api/generate-strategy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiGoogleAdsDisconnectRoute = ApiGoogleAdsDisconnectRouteImport.update({
@@ -65,6 +71,7 @@ const ApiGoogleAdsOauthStartRoute = ApiGoogleAdsOauthStartRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/analyze-website': typeof ApiAnalyzeWebsiteRoute
+  '/api/generate-strategy': typeof ApiGenerateStrategyRoute
   '/api/google-ads/disconnect': typeof ApiGoogleAdsDisconnectRoute
   '/api/google-ads/enrich-keywords': typeof ApiGoogleAdsEnrichKeywordsRoute
   '/api/google-ads/push-campaigns': typeof ApiGoogleAdsPushCampaignsRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/analyze-website': typeof ApiAnalyzeWebsiteRoute
+  '/api/generate-strategy': typeof ApiGenerateStrategyRoute
   '/api/google-ads/disconnect': typeof ApiGoogleAdsDisconnectRoute
   '/api/google-ads/enrich-keywords': typeof ApiGoogleAdsEnrichKeywordsRoute
   '/api/google-ads/push-campaigns': typeof ApiGoogleAdsPushCampaignsRoute
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api/analyze-website': typeof ApiAnalyzeWebsiteRoute
+  '/api/generate-strategy': typeof ApiGenerateStrategyRoute
   '/api/google-ads/disconnect': typeof ApiGoogleAdsDisconnectRoute
   '/api/google-ads/enrich-keywords': typeof ApiGoogleAdsEnrichKeywordsRoute
   '/api/google-ads/push-campaigns': typeof ApiGoogleAdsPushCampaignsRoute
@@ -98,6 +107,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/api/analyze-website'
+    | '/api/generate-strategy'
     | '/api/google-ads/disconnect'
     | '/api/google-ads/enrich-keywords'
     | '/api/google-ads/push-campaigns'
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/api/analyze-website'
+    | '/api/generate-strategy'
     | '/api/google-ads/disconnect'
     | '/api/google-ads/enrich-keywords'
     | '/api/google-ads/push-campaigns'
@@ -118,6 +129,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/api/analyze-website'
+    | '/api/generate-strategy'
     | '/api/google-ads/disconnect'
     | '/api/google-ads/enrich-keywords'
     | '/api/google-ads/push-campaigns'
@@ -129,6 +141,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiAnalyzeWebsiteRoute: typeof ApiAnalyzeWebsiteRoute
+  ApiGenerateStrategyRoute: typeof ApiGenerateStrategyRoute
   ApiGoogleAdsDisconnectRoute: typeof ApiGoogleAdsDisconnectRoute
   ApiGoogleAdsEnrichKeywordsRoute: typeof ApiGoogleAdsEnrichKeywordsRoute
   ApiGoogleAdsPushCampaignsRoute: typeof ApiGoogleAdsPushCampaignsRoute
@@ -151,6 +164,13 @@ declare module '@tanstack/react-router' {
       path: '/api/analyze-website'
       fullPath: '/api/analyze-website'
       preLoaderRoute: typeof ApiAnalyzeWebsiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/generate-strategy': {
+      id: '/api/generate-strategy'
+      path: '/api/generate-strategy'
+      fullPath: '/api/generate-strategy'
+      preLoaderRoute: typeof ApiGenerateStrategyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/google-ads/disconnect': {
@@ -201,6 +221,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiAnalyzeWebsiteRoute: ApiAnalyzeWebsiteRoute,
+  ApiGenerateStrategyRoute: ApiGenerateStrategyRoute,
   ApiGoogleAdsDisconnectRoute: ApiGoogleAdsDisconnectRoute,
   ApiGoogleAdsEnrichKeywordsRoute: ApiGoogleAdsEnrichKeywordsRoute,
   ApiGoogleAdsPushCampaignsRoute: ApiGoogleAdsPushCampaignsRoute,

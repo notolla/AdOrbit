@@ -16,6 +16,7 @@ function encodeOAuthError(error: unknown): string {
   if (!(error instanceof Error)) return "exchange_failed";
 
   const message = error.message.toLowerCase();
+  if (message.includes("google cloud projenizde etkin değil")) return "api_not_enabled";
   if (message.includes("yenileme jetonu")) return "missing_refresh_token";
   if (message.includes("erişilebilir google ads hesapları")) return "list_accounts_failed";
   if (message.includes("oauth token değişimi")) return "token_exchange_failed";

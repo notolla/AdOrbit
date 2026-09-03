@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowUpRight, Check, Copy, Loader2, Sparkles } from "lucide-react";
+import { ArrowUpRight, Check, Copy, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useGoogleAdsConnection } from "@/contexts/GoogleAdsConnectionContext";
 import { GoogleAdsPaywallOverlay } from "@/components/landing/GoogleAdsConnectCard";
@@ -219,10 +219,7 @@ export function ResponsiveAdCopy({ campaigns, analysis, websiteUrl }: Responsive
                   Google Ads&apos;e aktarılıyor…
                 </>
               ) : (
-                <>
-                  <Sparkles className="h-4 w-4" />
-                  Google Ads&apos;e Aktar
-                </>
+                "Google Ads'e Aktar"
               )}
             </button>
             {unlocked ? (
