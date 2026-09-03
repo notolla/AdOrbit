@@ -23,3 +23,10 @@ export function getStrategyReportUnlockEmail(): string | null {
   if (typeof window === "undefined") return null;
   return window.sessionStorage.getItem(EMAIL_KEY);
 }
+
+export function clearStrategyReportUnlock(): void {
+  if (typeof window === "undefined") return;
+  window.sessionStorage.removeItem(UNLOCKED_REPORT_KEY);
+  window.sessionStorage.removeItem(EMAIL_KEY);
+  clearLegacyStrategyReportUnlock();
+}

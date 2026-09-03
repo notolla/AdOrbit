@@ -10,6 +10,7 @@ import { RoiCalculator } from "@/components/RoiCalculator";
 import { FAQ } from "@/components/landing/FAQ";
 import { PlatformConnectionsPanel } from "@/components/live/PlatformConnectionsPanel";
 import { loadAnalysisHistory } from "@/lib/analysis-history";
+import { clearAppHistory } from "@/lib/clear-app-history";
 import { loadAnalysisSession, saveAnalysisSession } from "@/lib/analysis-session";
 import { enrichKeywordsWithGoogleAds } from "@/lib/google-ads-connection";
 import { useGoogleAdsConnection } from "@/contexts/GoogleAdsConnectionContext";
@@ -125,6 +126,17 @@ export function LiveApiWorkspace() {
     scrollToPreview();
   }
 
+  function handleClearHistory() {
+    clearAppHistory();
+    setHistory([]);
+    setAnalysis(null);
+    setActiveSnapshot(null);
+    setUserEmail("");
+    restoredAfterConnectRef.current = false;
+    wasConnectedRef.current = false;
+    toast.success("Geçmiş temizlendi.");
+  }
+
   return (
     <>
       <PlatformConnectionsPanel />
@@ -136,6 +148,7 @@ export function LiveApiWorkspace() {
           history={userEmail ? loadAnalysisHistory(userEmail) : history}
           activeSnapshotId={activeSnapshot?.id}
           onRestore={handleRestoreSnapshot}
+          onClear={handleClearHistory}
         />
       ) : null}
 
@@ -152,6 +165,7 @@ export function LiveApiWorkspace() {
               history={userEmail ? loadAnalysisHistory(userEmail) : history}
               activeSnapshotId={activeSnapshot?.id}
               onRestore={handleRestoreSnapshot}
+              onClear={handleClearHistory}
             />
           </>
         ) : null}

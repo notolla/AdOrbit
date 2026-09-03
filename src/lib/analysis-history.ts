@@ -71,6 +71,11 @@ export function saveAnalysisSnapshot(input: {
   return snapshot;
 }
 
+export function clearAnalysisHistory(): void {
+  if (typeof window === "undefined") return;
+  window.localStorage.removeItem(STORAGE_KEY);
+}
+
 export function loadAnalysisHistory(email?: string): AnalysisSnapshot[] {
   const snapshots = readAllSnapshots().sort(
     (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),

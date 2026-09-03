@@ -6,6 +6,7 @@ type AnalysisHistoryPanelProps = {
   history: AnalysisSnapshot[];
   activeSnapshotId?: string | null;
   onRestore: (snapshot: AnalysisSnapshot) => void;
+  onClear?: () => void;
   compact?: boolean;
 };
 
@@ -13,6 +14,7 @@ export function AnalysisHistoryPanel({
   history,
   activeSnapshotId,
   onRestore,
+  onClear,
   compact = false,
 }: AnalysisHistoryPanelProps) {
   if (history.length === 0) {
@@ -28,16 +30,27 @@ export function AnalysisHistoryPanel({
       }
     >
       <div className={compact ? "" : "mx-auto max-w-5xl px-5"}>
-        <header className="mb-4 flex items-center gap-2">
-          <History className="h-4 w-4 text-[#4285F4]" />
-          <div>
-            <p className="section-label">Geçmiş analiz arşivi</p>
-            {!compact ? (
-              <p className="mt-1 text-sm text-slate-600">
-                Daha önce oluşturduğunuz kampanya revizyonlarına tek tıkla dönün.
-              </p>
-            ) : null}
+        <header className="mb-4 flex items-start justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <History className="h-4 w-4 text-[#4285F4]" />
+            <div>
+              <p className="section-label">Geçmiş analiz arşivi</p>
+              {!compact ? (
+                <p className="mt-1 text-sm text-slate-600">
+                  Daha önce oluşturduğunuz kampanya revizyonlarına tek tıkla dönün.
+                </p>
+              ) : null}
+            </div>
           </div>
+          {onClear ? (
+            <button
+              type="button"
+              onClick={onClear}
+              className="shrink-0 text-xs font-medium text-slate-500 underline-offset-2 transition-colors hover:text-slate-800 hover:underline"
+            >
+              Geçmişi sil
+            </button>
+          ) : null}
         </header>
 
         <div className="space-y-2">
