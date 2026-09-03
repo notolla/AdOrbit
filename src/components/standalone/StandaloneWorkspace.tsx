@@ -17,14 +17,13 @@ import {
 export function StandaloneWorkspace() {
   const [loading, setLoading] = useState(false);
   const [report, setReport] = useState<StrategyReport | null>(null);
-  const [unlocked, setUnlocked] = useState(isStrategyReportUnlocked);
+  const [unlocked, setUnlocked] = useState(false);
   const reportRef = useRef<HTMLDivElement>(null);
 
   async function handleSubmit(input: {
     website_url: string;
     product_service: string;
     industry_notes: string;
-    email: string;
   }) {
     setLoading(true);
     try {
@@ -32,18 +31,11 @@ export function StandaloneWorkspace() {
         product_service: input.product_service,
         website_url: input.website_url || undefined,
         industry_notes: input.industry_notes || undefined,
-        email: input.email || undefined,
       });
       setReport(next);
+      setUnlocked(isStrategyReportUnlocked(next.generated_at));
 
-      if (input.email.trim()) {
-        unlockStrategyReport(input.email.trim());
-        setUnlocked(true);
-      } else {
-        setUnlocked(isStrategyReportUnlocked());
-      }
-
-      toast.success("Strateji raporu özeti hazır.");
+      toast.success("Strateji raporu özeti hazır — tam rapor için e-posta girin.");
       window.requestAnimationFrame(() => {
         reportRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       });
@@ -55,20 +47,22 @@ export function StandaloneWorkspace() {
   }
 
   function handleUnlock(email: string) {
-    unlockStrategyReport(email);
+    if (!report) return;
+    unlockStrategyReport(report.generated_at, email);
     setUnlocked(true);
   }
 
   return (
     <>
       <StrategyInputForm loading={loading} onSubmit={handleSubmit} />
-      <SocialProof />
 
       <div ref={reportRef}>
         {report ? (
           <StrategyReportPreview report={report} unlocked={unlocked} onUnlock={handleUnlock} />
         ) : null}
       </div>
+
+      <SocialProof />
 
       <HowItWorks />
       <ComparisonTable />

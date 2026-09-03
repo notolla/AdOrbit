@@ -139,9 +139,16 @@ export function StrategyReportPreview({ report, unlocked, onUnlock }: StrategyRe
               </p>
             ) : null}
             {report.website_insights ? (
-              <p className="mt-2 rounded-lg border border-slate-200/80 bg-white px-3 py-2 text-xs leading-relaxed text-slate-600">
+              <p
+                className={`mt-2 rounded-lg border border-slate-200/80 bg-white px-3 py-2 text-xs leading-relaxed text-slate-600 ${!unlocked ? "select-none blur-[2px] opacity-70" : ""}`}
+              >
                 <span className="font-medium text-slate-700">Site analizi:</span>{" "}
                 {report.website_insights}
+              </p>
+            ) : null}
+            {!unlocked ? (
+              <p className="mt-3 inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-[11px] font-medium text-amber-800">
+                Önizleme modu — kanal detayları kilitli
               </p>
             ) : null}
           </div>
@@ -170,8 +177,8 @@ export function StrategyReportPreview({ report, unlocked, onUnlock }: StrategyRe
           )}
         </header>
 
-        <div className="relative mt-6">
-          <div className="space-y-4">
+        <div className="relative mt-6 min-h-[520px]">
+          <div className="space-y-4 pb-8">
             {previewChannel ? (
               <ChannelCard channel={previewChannel} lockedDetail={!unlocked} />
             ) : null}
@@ -179,7 +186,7 @@ export function StrategyReportPreview({ report, unlocked, onUnlock }: StrategyRe
             {lockedChannels.map((channel) => (
               <div
                 key={channel.channel}
-                className={!unlocked ? "select-none blur-[4px] opacity-55" : undefined}
+                className={!unlocked ? "select-none blur-[5px] opacity-50" : undefined}
               >
                 <ChannelCard channel={channel} />
               </div>

@@ -13,7 +13,6 @@ type StrategyInputFormProps = {
     website_url: string;
     product_service: string;
     industry_notes: string;
-    email: string;
   }) => void;
 };
 
@@ -21,7 +20,6 @@ export function StrategyInputForm({ loading, onSubmit }: StrategyInputFormProps)
   const [websiteUrl, setWebsiteUrl] = useState("");
   const [productService, setProductService] = useState("");
   const [industryNotes, setIndustryNotes] = useState("");
-  const [email, setEmail] = useState("");
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -29,7 +27,6 @@ export function StrategyInputForm({ loading, onSubmit }: StrategyInputFormProps)
       website_url: websiteUrl.trim(),
       product_service: productService.trim(),
       industry_notes: industryNotes.trim(),
-      email: email.trim(),
     });
   }
 
@@ -94,16 +91,6 @@ export function StrategyInputForm({ loading, onSubmit }: StrategyInputFormProps)
               value={industryNotes}
               onChange={(e) => setIndustryNotes(e.target.value)}
               placeholder="örn. KVKK uyumu, SOC 2, Türkiye pazarı"
-              className="input-field mt-1.5"
-            />
-          </div>
-          <div>
-            <label className="text-xs font-medium text-slate-700">E-posta (opsiyonel)</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Tam raporu doğrudan açmak için"
               className="input-field mt-1.5"
             />
           </div>

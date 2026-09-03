@@ -13,14 +13,14 @@ export function StrategyReportPaywallOverlay({
   return (
     <>
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 top-[18%] bg-gradient-to-b from-transparent via-white/60 to-white/95 backdrop-blur-[1px]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 top-[12%] z-10 bg-gradient-to-b from-white/10 via-white/70 to-white/95"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 top-[32%] backdrop-blur-md"
+        className="pointer-events-none absolute inset-x-0 bottom-0 top-[28%] z-10 backdrop-blur-md"
         aria-hidden
       />
-      <div className="absolute inset-0 flex items-center justify-center px-4 py-10">
+      <div className="absolute inset-0 z-20 flex items-center justify-center px-4 py-12">
         {children ?? <StrategyReportUnlockCard onUnlock={onUnlock} />}
       </div>
     </>

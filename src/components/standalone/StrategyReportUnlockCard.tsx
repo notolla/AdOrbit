@@ -32,22 +32,29 @@ export function StrategyReportUnlockCard({ onUnlock, className = "" }: StrategyR
 
   return (
     <div
-      className={`surface-card pointer-events-auto w-full max-w-md border-slate-200/90 bg-white/95 px-6 py-6 text-center shadow-xl backdrop-blur-md ${className}`}
+      className={`pointer-events-auto w-full max-w-lg rounded-xl border border-slate-200 bg-white px-7 py-7 text-center shadow-2xl ${className}`}
     >
-      <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[11px] font-medium text-slate-600">
-        Tam rapor · 3 kanal stratejisi
+      <span className="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-amber-800">
+        Kilitli içerik
       </span>
 
-      <h3 className="mt-4 font-display text-base font-semibold tracking-tight text-slate-900">
-        Kanal stratejilerini ve reklam metinlerini görüntüleyin
+      <h3 className="mt-4 font-display text-lg font-semibold tracking-tight text-slate-900">
+        Tam strateji raporunu görüntüleyin
       </h3>
 
       <p className="mt-2 text-sm leading-relaxed text-slate-600">
-        Google Ads, LinkedIn Ads ve Meta Ads için hedefleme parametreleri, anahtar kelimeler,
-        negatif listeler ve reklam metinlerinin tamamına erişmek için e-posta adresinizi girin.
+        LinkedIn Ads ve Meta Ads kanal stratejileri, anahtar kelimeler, negatif listeler ve tüm
+        reklam metinleri e-posta doğrulaması sonrası açılır.
       </p>
 
+      <ul className="mt-4 space-y-1.5 text-left text-xs text-slate-500">
+        <li>• 3 kanal kampanya stratejisi</li>
+        <li>• Hedefleme parametreleri ve bütçe önerileri</li>
+        <li>• PDF / HTML dışa aktarma</li>
+      </ul>
+
       <form onSubmit={(event) => void handleSubmit(event)} className="mt-5 space-y-3 text-left">
+        <label className="block text-xs font-medium text-slate-700">Kurumsal e-posta</label>
         <input
           type="email"
           required
