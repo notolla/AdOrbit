@@ -10,33 +10,131 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiAnalyzeWebsiteRouteImport } from './routes/api/analyze-website'
+import { Route as ApiGoogleAdsDisconnectRouteImport } from './routes/api/google-ads/disconnect'
+import { Route as ApiGoogleAdsEnrichKeywordsRouteImport } from './routes/api/google-ads/enrich-keywords'
+import { Route as ApiGoogleAdsPushCampaignsRouteImport } from './routes/api/google-ads/push-campaigns'
+import { Route as ApiGoogleAdsStatusRouteImport } from './routes/api/google-ads/status'
+import { Route as ApiGoogleAdsOauthCallbackRouteImport } from './routes/api/google-ads/oauth/callback'
+import { Route as ApiGoogleAdsOauthStartRouteImport } from './routes/api/google-ads/oauth/start'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAnalyzeWebsiteRoute = ApiAnalyzeWebsiteRouteImport.update({
+  id: '/api/analyze-website',
+  path: '/api/analyze-website',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGoogleAdsDisconnectRoute = ApiGoogleAdsDisconnectRouteImport.update({
+  id: '/api/google-ads/disconnect',
+  path: '/api/google-ads/disconnect',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGoogleAdsEnrichKeywordsRoute =
+  ApiGoogleAdsEnrichKeywordsRouteImport.update({
+    id: '/api/google-ads/enrich-keywords',
+    path: '/api/google-ads/enrich-keywords',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiGoogleAdsPushCampaignsRoute =
+  ApiGoogleAdsPushCampaignsRouteImport.update({
+    id: '/api/google-ads/push-campaigns',
+    path: '/api/google-ads/push-campaigns',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiGoogleAdsStatusRoute = ApiGoogleAdsStatusRouteImport.update({
+  id: '/api/google-ads/status',
+  path: '/api/google-ads/status',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGoogleAdsOauthCallbackRoute =
+  ApiGoogleAdsOauthCallbackRouteImport.update({
+    id: '/api/google-ads/oauth/callback',
+    path: '/api/google-ads/oauth/callback',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiGoogleAdsOauthStartRoute = ApiGoogleAdsOauthStartRouteImport.update({
+  id: '/api/google-ads/oauth/start',
+  path: '/api/google-ads/oauth/start',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/analyze-website': typeof ApiAnalyzeWebsiteRoute
+  '/api/google-ads/disconnect': typeof ApiGoogleAdsDisconnectRoute
+  '/api/google-ads/enrich-keywords': typeof ApiGoogleAdsEnrichKeywordsRoute
+  '/api/google-ads/push-campaigns': typeof ApiGoogleAdsPushCampaignsRoute
+  '/api/google-ads/status': typeof ApiGoogleAdsStatusRoute
+  '/api/google-ads/oauth/callback': typeof ApiGoogleAdsOauthCallbackRoute
+  '/api/google-ads/oauth/start': typeof ApiGoogleAdsOauthStartRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/analyze-website': typeof ApiAnalyzeWebsiteRoute
+  '/api/google-ads/disconnect': typeof ApiGoogleAdsDisconnectRoute
+  '/api/google-ads/enrich-keywords': typeof ApiGoogleAdsEnrichKeywordsRoute
+  '/api/google-ads/push-campaigns': typeof ApiGoogleAdsPushCampaignsRoute
+  '/api/google-ads/status': typeof ApiGoogleAdsStatusRoute
+  '/api/google-ads/oauth/callback': typeof ApiGoogleAdsOauthCallbackRoute
+  '/api/google-ads/oauth/start': typeof ApiGoogleAdsOauthStartRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/analyze-website': typeof ApiAnalyzeWebsiteRoute
+  '/api/google-ads/disconnect': typeof ApiGoogleAdsDisconnectRoute
+  '/api/google-ads/enrich-keywords': typeof ApiGoogleAdsEnrichKeywordsRoute
+  '/api/google-ads/push-campaigns': typeof ApiGoogleAdsPushCampaignsRoute
+  '/api/google-ads/status': typeof ApiGoogleAdsStatusRoute
+  '/api/google-ads/oauth/callback': typeof ApiGoogleAdsOauthCallbackRoute
+  '/api/google-ads/oauth/start': typeof ApiGoogleAdsOauthStartRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/api/analyze-website'
+    | '/api/google-ads/disconnect'
+    | '/api/google-ads/enrich-keywords'
+    | '/api/google-ads/push-campaigns'
+    | '/api/google-ads/status'
+    | '/api/google-ads/oauth/callback'
+    | '/api/google-ads/oauth/start'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/api/analyze-website'
+    | '/api/google-ads/disconnect'
+    | '/api/google-ads/enrich-keywords'
+    | '/api/google-ads/push-campaigns'
+    | '/api/google-ads/status'
+    | '/api/google-ads/oauth/callback'
+    | '/api/google-ads/oauth/start'
+  id:
+    | '__root__'
+    | '/'
+    | '/api/analyze-website'
+    | '/api/google-ads/disconnect'
+    | '/api/google-ads/enrich-keywords'
+    | '/api/google-ads/push-campaigns'
+    | '/api/google-ads/status'
+    | '/api/google-ads/oauth/callback'
+    | '/api/google-ads/oauth/start'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiAnalyzeWebsiteRoute: typeof ApiAnalyzeWebsiteRoute
+  ApiGoogleAdsDisconnectRoute: typeof ApiGoogleAdsDisconnectRoute
+  ApiGoogleAdsEnrichKeywordsRoute: typeof ApiGoogleAdsEnrichKeywordsRoute
+  ApiGoogleAdsPushCampaignsRoute: typeof ApiGoogleAdsPushCampaignsRoute
+  ApiGoogleAdsStatusRoute: typeof ApiGoogleAdsStatusRoute
+  ApiGoogleAdsOauthCallbackRoute: typeof ApiGoogleAdsOauthCallbackRoute
+  ApiGoogleAdsOauthStartRoute: typeof ApiGoogleAdsOauthStartRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +146,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/analyze-website': {
+      id: '/api/analyze-website'
+      path: '/api/analyze-website'
+      fullPath: '/api/analyze-website'
+      preLoaderRoute: typeof ApiAnalyzeWebsiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/google-ads/disconnect': {
+      id: '/api/google-ads/disconnect'
+      path: '/api/google-ads/disconnect'
+      fullPath: '/api/google-ads/disconnect'
+      preLoaderRoute: typeof ApiGoogleAdsDisconnectRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/google-ads/enrich-keywords': {
+      id: '/api/google-ads/enrich-keywords'
+      path: '/api/google-ads/enrich-keywords'
+      fullPath: '/api/google-ads/enrich-keywords'
+      preLoaderRoute: typeof ApiGoogleAdsEnrichKeywordsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/google-ads/push-campaigns': {
+      id: '/api/google-ads/push-campaigns'
+      path: '/api/google-ads/push-campaigns'
+      fullPath: '/api/google-ads/push-campaigns'
+      preLoaderRoute: typeof ApiGoogleAdsPushCampaignsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/google-ads/status': {
+      id: '/api/google-ads/status'
+      path: '/api/google-ads/status'
+      fullPath: '/api/google-ads/status'
+      preLoaderRoute: typeof ApiGoogleAdsStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/google-ads/oauth/callback': {
+      id: '/api/google-ads/oauth/callback'
+      path: '/api/google-ads/oauth/callback'
+      fullPath: '/api/google-ads/oauth/callback'
+      preLoaderRoute: typeof ApiGoogleAdsOauthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/google-ads/oauth/start': {
+      id: '/api/google-ads/oauth/start'
+      path: '/api/google-ads/oauth/start'
+      fullPath: '/api/google-ads/oauth/start'
+      preLoaderRoute: typeof ApiGoogleAdsOauthStartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiAnalyzeWebsiteRoute: ApiAnalyzeWebsiteRoute,
+  ApiGoogleAdsDisconnectRoute: ApiGoogleAdsDisconnectRoute,
+  ApiGoogleAdsEnrichKeywordsRoute: ApiGoogleAdsEnrichKeywordsRoute,
+  ApiGoogleAdsPushCampaignsRoute: ApiGoogleAdsPushCampaignsRoute,
+  ApiGoogleAdsStatusRoute: ApiGoogleAdsStatusRoute,
+  ApiGoogleAdsOauthCallbackRoute: ApiGoogleAdsOauthCallbackRoute,
+  ApiGoogleAdsOauthStartRoute: ApiGoogleAdsOauthStartRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

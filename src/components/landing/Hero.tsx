@@ -1,15 +1,100 @@
-import { useState, type FormEvent } from "react";
-import { ArrowRight, Loader2, Star } from "lucide-react";
+import { useEffect, useState, type FormEvent } from "react";
+import { ArrowRight, Loader2, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { OrbitVisual } from "./OrbitVisual";
+import {
+  analyzeWebsiteClient,
+  type AnalysisStatus,
+} from "@/services/analyze-client";
+import type { AnalysisSubmitPayload } from "@/services/types";
+import { saveAnalysisSnapshot } from "@/lib/analysis-history";
+import { LiveActivitySteps } from "@/components/landing/LiveActivitySteps";
+import { OrbitalHeroAnimation } from "@/components/OrbitalHeroAnimation";
 
-const BADGES = ["Google Ads API Entegre", "OpenAI Destekli", "KVKK Uyumlu"];
+const BADGES = ["Google Ads API", "Gemini AI", "KVKK Uyumlu"];
 
-export function Hero({ onSubmitted }: { onSubmitted: () => void }) {
+type HeroProps = {
+  onSubmitted: (payload: AnalysisSubmitPayload) => void;
+};
+
+export function Hero({ onSubmitted }: HeroProps) {
   const [website, setWebsite] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [analysisStatus, setAnalysisStatus] = useState<AnalysisStatus>("scanning");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+
+  useEffect(() => {
+    if (!loading) {
+      setElapsedSeconds(0);
+      return;
+    }
+
+    const tick = window.setInterval(() => {
+      setElapsedSeconds((seconds) => seconds + 1);
+    }, 1000);
+
+    return () => window.clearInterval(tick);
+  }, [loading]);
+
+  useEffect(() => {
+    if (!loading || analysisStatus !== "scanning") return;
+
+    const timer = window.setTimeout(() => {
+      setAnalysisStatus((current) => (current === "scanning" ? "analyzing" : current));
+    }, 2500);
+
+    return () => window.clearTimeout(timer);
+  }, [loading, analysisStatus]);
+
+  useEffect(() => {
+    if (!loading || analysisStatus !== "analyzing") return;
+
+    const timer = window.setTimeout(() => {
+      setAnalysisStatus((current) => (current === "analyzing" ? "optimizing" : current));
+    }, 18_000);
+
+    return () => window.clearTimeout(timer);
+  }, [loading, analysisStatus]);
+
+  async function runAnalysis() {
+    setLoading(true);
+    setErrorMessage(null);
+    setAnalysisStatus("scanning");
+
+    try {
+      const analysis = await analyzeWebsiteClient(website.trim(), {
+        onStatusChange: setAnalysisStatus,
+      });
+
+      const snapshot = saveAnalysisSnapshot({
+        email: email.trim(),
+        website_url: website.trim(),
+        analysis,
+      });
+
+      const { error } = await supabase
+        .from("leads")
+        .insert({ website_url: website.trim(), email: email.trim() });
+
+      if (error) {
+        toast.error("Kayıt sırasında bir sorun oluştu. Önizleme yine de gösteriliyor.");
+      } else {
+        toast.success("Kampanya önizlemeniz hazırlandı.");
+      }
+
+      onSubmitted({ analysis, website: website.trim(), email: email.trim(), snapshot });
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Kampanya analizi tamamlanamadı. Lütfen tekrar deneyin.";
+      setErrorMessage(message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -17,119 +102,112 @@ export function Hero({ onSubmitted }: { onSubmitted: () => void }) {
       toast.error("Lütfen web sitesi adresinizi ve e-posta adresinizi girin.");
       return;
     }
-    setLoading(true);
-    const { error } = await supabase
-      .from("leads")
-      .insert({ website_url: website.trim(), email: email.trim() });
-    setLoading(false);
 
-    if (error) {
-      toast.error("Kayıt sırasında bir sorun oluştu. Lütfen tekrar deneyin.");
-      return;
-    }
-    toast.success("Kampanya önizlemeniz hazırlandı.");
-    onSubmitted();
+    await runAnalysis();
   }
 
   return (
-    <section className="bg-background">
-      <div className="mx-auto max-w-7xl px-5 pb-16 pt-14 sm:pt-20">
-        <div className="max-w-3xl">
-          <span className="inline-flex items-center gap-2 rounded-full border border-slate-100 bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
-            Yapay zeka destekli Google Ads kurulumu
+    <section id="kampanya-form" className="min-h-fit border-b border-slate-200/60 bg-background">
+      <div className="mx-auto max-w-6xl px-5 pb-20 pt-16 sm:pt-24">
+        <div className="max-w-2xl">
+          <span className="pill-badge-google">
+            <span className="google-dots scale-90">
+              <span />
+              <span />
+              <span />
+              <span />
+            </span>
+            Google Ads otomasyon platformu
           </span>
-          <h1 className="mt-5 font-display text-4xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-            Google Ads Reklamlarınızı Yapay Zeka ile 60 Saniyede Kurun
+          <h1 className="mt-6 font-display text-[2rem] font-semibold leading-[1.15] tracking-tight text-slate-900 sm:text-[2.75rem] lg:text-5xl">
+            Google Ads kampanyalarınızı{" "}
+            <span className="text-[#4285F4]">60 saniyede</span> kurun
           </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Web sitenizi girin; sektörünüze özel reklam gruplarını, niyet odaklı anahtar kelimeleri
-            ve bütçe yakan negatif kelimeleri otomatik oluşturalım.
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-600">
+            Web sitenizi analiz edin; sektörünüze özel reklam grupları, long-tail anahtar
+            kelimeler ve bütçe koruma listeleri otomatik oluşturulsun.
           </p>
         </div>
 
-        <div className="mt-12 grid items-center gap-10 lg:grid-cols-2">
+        <div className="mt-14 grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
-            <form
-              onSubmit={handleSubmit}
-              className="rounded-2xl border border-slate-100 bg-card p-5 shadow-sm sm:p-6"
-            >
-              <label
-                htmlFor="website"
-                className="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
-              >
-                Web Sitesi Adresiniz
-              </label>
-              <input
-                id="website"
-                value={website}
-                onChange={(e) => setWebsite(e.target.value)}
-                placeholder="örnek: websiteadresiniz.com"
-                className="mt-2 h-14 w-full rounded-xl border border-input bg-background px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-4 focus:ring-primary/10"
-              />
+            <form onSubmit={handleSubmit} className="surface-card relative p-6 sm:p-7">
+              {loading ? (
+                <div
+                  className="absolute inset-0 z-10 flex items-center justify-center rounded-xl bg-white/70 px-6 backdrop-blur-sm"
+                  aria-live="polite"
+                  aria-busy="true"
+                >
+                  <LiveActivitySteps status={analysisStatus} elapsedSeconds={elapsedSeconds} />
+                </div>
+              ) : null}
 
-              <label
-                htmlFor="email"
-                className="mt-5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground"
-              >
-                E-posta Adresiniz
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="ad@sirketiniz.com"
-                className="mt-2 h-12 w-full rounded-xl border border-input bg-background px-4 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-4 focus:ring-primary/10"
-              />
+              <div className="space-y-5">
+                <div>
+                  <label htmlFor="website" className="section-label">
+                    Web sitesi
+                  </label>
+                  <input
+                    id="website"
+                    value={website}
+                    onChange={(e) => setWebsite(e.target.value)}
+                    placeholder="websiteadresiniz.com"
+                    className="input-field mt-2"
+                    disabled={loading}
+                  />
+                </div>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="mt-5 flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-accent px-5 py-3.5 text-sm font-semibold text-accent-foreground shadow-sm transition-colors hover:bg-accent/90 disabled:opacity-70"
-              >
+                <div>
+                  <label htmlFor="email" className="section-label">
+                    E-posta
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="ad@sirketiniz.com"
+                    className="input-field mt-2"
+                    disabled={loading}
+                  />
+                </div>
+              </div>
+
+              {errorMessage ? (
+                <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50/80 p-4">
+                  <p className="text-sm text-slate-700">{errorMessage}</p>
+                  <button
+                    type="button"
+                    onClick={() => void runAnalysis()}
+                    className="btn-secondary mt-3"
+                  >
+                    <RefreshCw className="h-4 w-4" />
+                    Tekrar Dene
+                  </button>
+                </div>
+              ) : null}
+
+              <button type="submit" disabled={loading} className="btn-primary mt-6 w-full">
                 {loading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
                   <ArrowRight className="h-4 w-4" />
                 )}
-                60 Saniyede Kampanyanı Oluştur
+                Kampanyanı Oluştur
               </button>
 
               <ul className="mt-5 flex flex-wrap gap-2">
                 {BADGES.map((badge) => (
-                  <li
-                    key={badge}
-                    className="rounded-full border border-slate-100 bg-muted px-3 py-1 text-[11px] font-medium text-muted-foreground"
-                  >
+                  <li key={badge} className="pill-badge">
                     {badge}
                   </li>
                 ))}
               </ul>
             </form>
-
-            <div className="mt-5 flex items-center gap-4 rounded-2xl border border-slate-100 bg-card p-4 shadow-sm">
-              <img
-                src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=200&q=80"
-                alt="Bilgisayar başında çalışan gülümseyen profesyonel"
-                loading="lazy"
-                className="h-14 w-14 shrink-0 rounded-full object-cover"
-              />
-              <div>
-                <div className="flex items-center gap-0.5">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="h-3.5 w-3.5 fill-accent text-accent" />
-                  ))}
-                </div>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  <span className="font-semibold text-foreground">420+ pazarlama ekibi</span>{" "}
-                  kampanyalarını AdBuilder AI ile kuruyor.
-                </p>
-              </div>
-            </div>
           </div>
 
-          <div className="order-first lg:order-last">
-            <OrbitVisual />
+          <div className="order-first flex items-center justify-center lg:order-last">
+            <OrbitalHeroAnimation />
           </div>
         </div>
       </div>
